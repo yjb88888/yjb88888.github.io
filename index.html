@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>慧铭AI语音助手 V5.6 - Pi测试网</title>
-    <!-- Pi官方SDK，必须保留 -->
     <script src="https://sdk.minepi.com/pi-sdk.js"></script>
     <style>
         body {
@@ -22,6 +21,16 @@
         }
         .success { color: #2ecc71; }
         .error { color: #e74c3c; }
+        #loginBtn {
+            margin-top: 20px;
+            padding: 12px 24px;
+            font-size: 18px;
+            background-color: #6c5ce7;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -29,37 +38,34 @@
     <p>Pi Network 测试网专属版本</p >
 
     <div class="status-box">
-        <p id="status">正在连接Pi网络，等待登录...</p >
+        <p id="status">点击下方按钮开始登录</p >
     </div>
 
-    <script>
-        // 初始化Pi SDK（测试网必须开sandbox）
-        Pi.init({
-            version: "2.0",
-            sandbox: true
-        });
+    <button id="loginBtn">连接Pi网络并登录</button>
 
-        // 触发登录认证
+    <script>
+        Pi.init({ version: "2.0", sandbox: true });
+
         function authenticateUser() {
+            document.getElementById("status").innerText = "正在请求授权...";
             Pi.authenticate(
                 ["username", "payments"],
                 function onSuccess(authResult) {
                     document.getElementById("status").className = "success";
                     document.getElementById("status").innerText = 
-                        "✅ 登录成功！欢迎使用慧铭AI V5.6\n用户ID：" + authResult.user.uid;
+                        "✅ 登录成功！用户ID：" + authResult.user.uid;
+                    alert("登录成功！你的用户ID：" + authResult.user.uid);
                 },
                 function onError(error) {
                     document.getElementById("status").className = "error";
                     document.getElementById("status").innerText = 
                         "❌ 登录失败：" + error.message;
+                    alert("登录失败：" + error.message);
                 }
             );
         }
 
-        // 页面加载完成自动触发登录
-        window.onload = function() {
-            authenticateUser();
-        };
+        document.getElementById("loginBtn").addEventListener("click", authenticateUser);
     </script>
 </body>
 </html>
