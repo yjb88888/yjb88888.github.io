@@ -44,7 +44,12 @@
     <button id="loginBtn">连接Pi网络并登录</button>
 
     <script>
-        Pi.init({ version: "2.0", sandbox: true });
+        // 把双引号里面替换成你的 Client ID
+        Pi.init({ 
+            version: "2.0", 
+            sandbox: true,
+            apiKey: "这里填你的DApp客户端ID"
+        });
 
         function authenticateUser() {
             document.getElementById("status").innerText = "正在请求授权...";
